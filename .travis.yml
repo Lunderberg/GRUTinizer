@@ -1,0 +1,33 @@
+language: cpp
+
+sudo: false
+
+script: make CPP=$COMPILER
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-4.8', 'libxpm-dev']
+      env:
+        - COMPILER=g++-4.8
+      install:
+        - wget https://root.cern.ch/download/root_v6.09.02.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
+        - tar -xzf root_v6.09.02.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
+        - source root/bin/thisroot.sh
+
+    - os: osx
+      osx_image: xcode7.3
+      compiler: clang
+      env:
+        - COMPILER=clang++
+      install:
+        - wget https://root.cern.ch/download/root_v6.09.02.macosx64-10.11-clang80.tar.gz
+        - ls
+        - tar -xzf root_v6.09.02.macosx64-10.11-clang80.tar.gz
+        - ls
+        - ls root
+        - source root/bin/thisroot.sh
