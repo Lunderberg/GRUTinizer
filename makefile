@@ -99,7 +99,13 @@ docs:
 bin/%: util/% | bin
 	@ln -sf ../$< $@
 
-.build/util/gadd.o: $(ROOTSYS)/main/src/hadd.cxx
+ifeq ($(USING_ROOT_6),1)
+  ROOT_HADD = from_root/root6/hadd.cxx
+else
+  ROOT_HADD = from_root/root5/hadd.cxx
+endif
+
+.build/util/gadd.o: $(ROOT_HADD)
 	@mkdir -p $(dir $@)
 	$(call run_and_test,sed s/hadd/gadd/g < $< | $(CPP) -x c++ -fPIC -c -o $@ $(CFLAGS) -,$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
