@@ -50,6 +50,15 @@ LIBRARY_DIRS   := $(shell ./find libraries -type d -links 2 2> /dev/null)
 LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
 LIBRARY_OUTPUT := $(patsubst %,lib/lib%.so,$(LIBRARY_NAMES))
 
+$(info --------------------)
+$(info $(shell find libraries -type d -links 2))
+$(info --------------------)
+$(info $(shell find libraries -type d -links 2 2> /dev/null))
+$(info --------------------)
+$(info LIBRARY_DIRS = $(LIBRARY_DIRS))
+$(info LIBRARY_OUTPUT = $(LIBRARY_OUTPUT))
+
+
 INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
 CFLAGS    += $(shell root-config --cflags)
 CFLAGS    += -MMD -MP $(INCLUDES)
@@ -112,7 +121,6 @@ endif
 bin/grutinizer: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) pcm_files bin
 	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-$(info LIBRARY_OUTPUT = $(LIBRARY_OUTPUT))
 bin/%: .build/util/%.o | $(LIBRARY_OUTPUT) pcm_files bin
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 

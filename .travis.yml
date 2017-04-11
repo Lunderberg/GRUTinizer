@@ -26,8 +26,5 @@ matrix:
         - COMPILER=clang++
       install:
         - wget https://root.cern.ch/download/root_v6.09.02.macosx64-10.11-clang80.tar.gz
-        - ls
         - tar -xzf root_v6.09.02.macosx64-10.11-clang80.tar.gz
-        - ls
-        - ls root
         - source root/bin/thisroot.sh
