@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if ! /usr/bin/find "$@"; then
+    >&2 echo Error in running find "$@"
+fi
