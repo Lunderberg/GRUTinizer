@@ -68,7 +68,7 @@ HISTOGRAM_SO    := $(patsubst histos/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard hist
 FILTER_SO    := $(patsubst filters/%.$(SRC_SUFFIX),lib/lib%.so,$(wildcard filters/*.$(SRC_SUFFIX)))
 
 ifdef VERBOSE
-run_and_test = @echo $(1) && $(1);
+run_and_test = @echo "$(1)" && $(1);
 else
 run_and_test =@printf "%b%b%b" " $(3)$(4)$(5)" $(notdir $(2)) "$(NO_COLOR)\r";  \
                 $(1) 2> $(2).log || touch $(2).error; \
@@ -107,7 +107,7 @@ endif
 
 .build/util/gadd.o: $(ROOT_HADD)
 	@mkdir -p $(dir $@)
-	$(call run_and_test,sed s/hadd/gadd/g < $< | $(CPP) -x c++ -fPIC -c -o $@ $(CFLAGS) -,$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
+	$(call run_and_test,sed s/hadd/gadd/g < $< | $(CPP) -x c++ -fPIC -c -o $@ $(CFLAGS) -,$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR))
 
 bin/grutinizer: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) pcm_files bin
 	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
