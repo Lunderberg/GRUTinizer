@@ -135,7 +135,7 @@ lib/lib%.so: .build/filters/%.o | lib
 # If a LinkDef.h file is present in the library directory,
 #    a dictionary file will also be generated and added to the library.
 libdir          = $(shell ./find libraries -name $(1) -type d)
-lib_src_files   = $(shell ./find $(call libdir,$(1)) -name "*.$(SRC_SUFFIX)")
+lib_src_files   = $(info Calling libdir with $(1) yields "$(call libdir,$(1))") $(shell ./find $(call libdir,$(1)) -name "*.$(SRC_SUFFIX)")
 lib_o_files     = $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(call lib_src_files,$(1)))
 lib_linkdef     = $(wildcard $(call libdir,$(1))/LinkDef.h)
 lib_dictionary  = $(patsubst %/LinkDef.h,.build/%/LibDictionary.o,$(call lib_linkdef,$(1)))
