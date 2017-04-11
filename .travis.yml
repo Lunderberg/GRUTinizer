@@ -2,7 +2,7 @@ language: cpp
 
 sudo: false
 
-script: make CPP=$COMPILER
+script: make CPP=$COMPILER VERBOSE=1
 
 matrix:
   include:
