@@ -112,6 +112,7 @@ endif
 bin/grutinizer: $(MAIN_O_FILES) | $(LIBRARY_OUTPUT) pcm_files bin
 	$(call run_and_test,$(CPP) $^ -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
+$(info LIBRARY_OUTPUT = $(LIBRARY_OUTPUT))
 bin/%: .build/util/%.o | $(LIBRARY_OUTPUT) pcm_files bin
 	$(call run_and_test,$(CPP) $< -o $@ $(LINKFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
