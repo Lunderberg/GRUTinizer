@@ -3,7 +3,7 @@ language: cpp
 sudo: false
 
 script:
-  - find --version
+  - find libraries -type d -exec ls -ld {} \;
   - ./find libraries -type d -links 2 2> /dev/null
   - find libraries -type d -links 2 2> /dev/null
   - make CPP=$COMPILER VERBOSE=1
