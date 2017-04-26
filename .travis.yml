@@ -2,7 +2,11 @@ language: cpp
 
 sudo: false
 
-script: make CPP=$COMPILER VERBOSE=1
+script:
+  - find --version
+  - ./find libraries -type d -links 2 2> /dev/null
+  - find libraries -type d -links 2 2> /dev/null
+  - make CPP=$COMPILER VERBOSE=1
 
 matrix:
   include:
