@@ -46,7 +46,7 @@ BLD_STRING= "Building\ "
 COPY_STRING="Copying\ \ "
 FIN_STRING="Finished Building"
 
-LIBRARY_DIRS   := $(shell ./find libraries -type d -links 2 2> /dev/null)
+LIBRARY_DIRS   := $(shell ./find libraries -type d -exec sh -c "if ! find {} ! -path {} -type d | grep -qe '.*'; then echo {}; fi" \; 2> /dev/null)
 LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
 LIBRARY_OUTPUT := $(patsubst %,lib/lib%.so,$(LIBRARY_NAMES))
 
