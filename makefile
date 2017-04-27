@@ -151,16 +151,16 @@ lib/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%) | lib
 	@mkdir -p $(dir $@)
 	$(call run_and_test,$(CPP) -fPIC -c $< -o $@ $(CFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
-dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head $(1) -n 1 2> /dev/null)))
+dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head -n 1 $(1) 2> /dev/null)))
 find_linkdef = $(shell ./find $(1) -name "*LinkDef.h")
 
 # In order for all function names to be unique, rootcint requires unique output names.
 # Therefore, usual wildcard rules are insufficient.
 # Eval is more powerful, but is less convenient to use.
 define library_template
-$$(info Head of $(1)/LinkDef.h: $$(shell head $(1)/LinkDef.h -n 1 2> /dev/null))
-$$(info Stripped Head of $(1)/LinkDef.h: $$(subst //,,$$(shell head $(1)/LinkDef.h -n 1 2> /dev/null)))
-$$(info Prefixed Head of $(1)/LinkDef.h: $$(addprefix $(PWD)/include/,$$(subst //,,$$(shell head $(1)/LinkDef.h -n 1 2> /dev/null))))
+$$(info Head of $(1)/LinkDef.h: $$(shell -n 1 head $(1)/LinkDef.h 2> /dev/null))
+$$(info Stripped Head of $(1)/LinkDef.h: $$(subst //,,$$(shell head -n 1 $(1)/LinkDef.h 2> /dev/null)))
+$$(info Prefixed Head of $(1)/LinkDef.h: $$(addprefix $(PWD)/include/,$$(subst //,,$$(shell head -n 1 $(1)/LinkDef.h 2> /dev/null))))
 $$(info Required for $(1)/LinkDef.h: $$(call dict_header_files,$(1)/LinkDef.h))
 $$(info )
 $$(info )
