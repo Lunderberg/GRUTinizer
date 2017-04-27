@@ -50,15 +50,6 @@ LIBRARY_DIRS   := $(shell ./find libraries -type d -exec sh -c "if ! find {} ! -
 LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
 LIBRARY_OUTPUT := $(patsubst %,lib/lib%.so,$(LIBRARY_NAMES))
 
-$(info --------------------)
-$(info $(shell find libraries -type d -links 2))
-$(info --------------------)
-$(info $(shell find libraries -type d -links 2 2> /dev/null))
-$(info --------------------)
-$(info LIBRARY_DIRS = $(LIBRARY_DIRS))
-$(info LIBRARY_OUTPUT = $(LIBRARY_OUTPUT))
-
-
 INCLUDES  := $(addprefix -I$(PWD)/,$(INCLUDES))
 CFLAGS    += $(shell root-config --cflags)
 CFLAGS    += -MMD -MP $(INCLUDES)
@@ -163,13 +154,16 @@ lib/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%) | lib
 dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head $(1) -n 1 2> /dev/null)))
 find_linkdef = $(shell ./find $(1) -name "*LinkDef.h")
 
-$(info Required for libGROOT: $(call dict_header_files,libraries/GROOT/LinkDef.h))
-
 # In order for all function names to be unique, rootcint requires unique output names.
 # Therefore, usual wildcard rules are insufficient.
 # Eval is more powerful, but is less convenient to use.
 define library_template
+$$(info Head of $(1)/LinkDef.h: $$(shell head $(1)/LinkDef.h -n 1 2> /dev/null))
+$$(info Stripped Head of $(1)/LinkDef.h: $$(subst //,,$$(shell head $(1)/LinkDef.h -n 1 2> /dev/null)))
+$$(info Prefixed Head of $(1)/LinkDef.h: $$(addprefix $(PWD)/include/,$$(subst //,,$$(shell head $(1)/LinkDef.h -n 1 2> /dev/null))))
 $$(info Required for $(1)/LinkDef.h: $$(call dict_header_files,$(1)/LinkDef.h))
+$$(info )
+$$(info )
 .build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h)
 	@mkdir -p $$(dir $$@)
 	$$(call run_and_test,rootcint -f $$@ -c $$(INCLUDES) -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
