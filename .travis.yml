@@ -3,11 +3,6 @@ language: cpp
 sudo: false
 
 script:
-  - find libraries -type d -exec ls -ld {} \;
-  - find libraries -type d -exec sh -c "if ! find {} ! -path {} -type d | grep -qe '.*'; then echo {}; fi" \;
-  - ./find libraries -type d -exec sh -c "if ! find {} ! -path {} -type d | grep -qe '.*'; then echo {}; fi" \;
-  - ./find libraries -type d -links 2 2> /dev/null
-  - find libraries -type d -links 2 2> /dev/null
   - make CPP=$COMPILER VERBOSE=1
 
 matrix:
