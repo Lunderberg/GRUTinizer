@@ -46,7 +46,7 @@ BLD_STRING= "Building\ "
 COPY_STRING="Copying\ \ "
 FIN_STRING="Finished Building"
 
-LIBRARY_DIRS   := $(shell ./find libraries -type d -exec sh -c "if ! find {} ! -path {} -type d | grep -qe '.*'; then echo {}; fi" \; 2> /dev/null)
+LIBRARY_DIRS   := $(shell find libraries -type d -exec sh -c "if ! find {} ! -path {} -type d | grep -qe '.*'; then echo {}; fi" \; 2> /dev/null)
 LIBRARY_NAMES  := $(notdir $(LIBRARY_DIRS))
 LIBRARY_OUTPUT := $(patsubst %,lib/lib%.so,$(LIBRARY_NAMES))
 
@@ -134,8 +134,8 @@ lib/lib%.so: .build/filters/%.o | lib
 # All src files in the library directory are included.
 # If a LinkDef.h file is present in the library directory,
 #    a dictionary file will also be generated and added to the library.
-libdir          = $(shell ./find libraries -name $(1) -type d)
-lib_src_files   = $(if $(call libdir,$(1)), $(shell ./find $(call libdir,$(1)) -name "*.$(SRC_SUFFIX)"), nonexisting-file.cxx)
+libdir          = $(shell find libraries -name $(1) -type d)
+lib_src_files   = $(if $(call libdir,$(1)), $(shell find $(call libdir,$(1)) -name "*.$(SRC_SUFFIX)"), nonexisting-file.cxx)
 lib_o_files     = $(patsubst %.$(SRC_SUFFIX),.build/%.o,$(call lib_src_files,$(1)))
 lib_linkdef     = $(wildcard $(call libdir,$(1))/LinkDef.h)
 lib_dictionary  = $(patsubst %/LinkDef.h,.build/%/LibDictionary.o,$(call lib_linkdef,$(1)))
@@ -152,7 +152,7 @@ lib/lib%.so: $$(call lib_o_files,%) $$(call lib_dictionary,%) | lib
 	$(call run_and_test,$(CPP) -fPIC -c $< -o $@ $(CFLAGS),$@,$(COM_COLOR),$(COM_STRING),$(OBJ_COLOR) )
 
 dict_header_files = $(addprefix $(PWD)/include/,$(subst //,,$(shell head -n 1 $(1) 2> /dev/null)))
-find_linkdef = $(shell ./find $(1) -name "*LinkDef.h")
+find_linkdef = $(shell find $(1) -name "*LinkDef.h")
 
 # In order for all function names to be unique, rootcint requires unique output names.
 # Therefore, usual wildcard rules are insufficient.
@@ -186,7 +186,7 @@ endef
 
 $(foreach lib,$(LIBRARY_DIRS),$(eval $(call library_template,$(lib))))
 
--include $(shell ./find .build -name '*.d' 2> /dev/null)
+-include $(shell find .build -name '*.d' 2> /dev/null)
 
 clean:
 	@printf "\n$(WARN_COLOR)Cleaning up$(NO_COLOR)\n\n"
