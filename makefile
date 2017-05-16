@@ -3,7 +3,6 @@
 .SECONDEXPANSION:
 
 
-PLATFORM:=$(PLATFORM)
 # EDIT THIS SECTION
 
 INCLUDES   = include
@@ -16,6 +15,7 @@ SRC_SUFFIX = cxx
 
 USING_ROOT_6 = $(shell expr $(shell root-config --version | cut -f1 -d.) \>= 6)
 
+PLATFORM:=$(shell uname)
 $(info PLATFORM: $(PLATFORM))
 
 ifeq ($(PLATFORM),Darwin)
