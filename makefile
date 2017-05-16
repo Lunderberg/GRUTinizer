@@ -158,7 +158,7 @@ find_linkdef = $(shell find $(1) -name "*LinkDef.h")
 # Therefore, usual wildcard rules are insufficient.
 # Eval is more powerful, but is less convenient to use.
 define library_template
-$$(info Head of $(1)/LinkDef.h: $$(shell -n 1 head $(1)/LinkDef.h 2> /dev/null))
+$$(info Head of $(1)/LinkDef.h: $$(shell head -n 1 $(1)/LinkDef.h 2> /dev/null))
 $$(info Stripped Head of $(1)/LinkDef.h: $$(subst //,,$$(shell head -n 1 $(1)/LinkDef.h 2> /dev/null)))
 $$(info Prefixed Head of $(1)/LinkDef.h: $$(addprefix $(PWD)/include/,$$(subst //,,$$(shell head -n 1 $(1)/LinkDef.h 2> /dev/null))))
 $$(info Required for $(1)/LinkDef.h: $$(call dict_header_files,$(1)/LinkDef.h))
