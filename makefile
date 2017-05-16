@@ -16,6 +16,8 @@ SRC_SUFFIX = cxx
 
 USING_ROOT_6 = $(shell expr $(shell root-config --version | cut -f1 -d.) \>= 6)
 
+$(info PLATFORM: $(PLATFORM))
+
 ifeq ($(PLATFORM),Darwin)
 export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
@@ -158,12 +160,6 @@ find_linkdef = $(shell find $(1) -name "*LinkDef.h")
 # Therefore, usual wildcard rules are insufficient.
 # Eval is more powerful, but is less convenient to use.
 define library_template
-$$(info Head of $(1)/LinkDef.h: $$(shell head -n 1 $(1)/LinkDef.h 2> /dev/null))
-$$(info Stripped Head of $(1)/LinkDef.h: $$(subst //,,$$(shell head -n 1 $(1)/LinkDef.h 2> /dev/null)))
-$$(info Prefixed Head of $(1)/LinkDef.h: $$(addprefix $(PWD)/include/,$$(subst //,,$$(shell head -n 1 $(1)/LinkDef.h 2> /dev/null))))
-$$(info Required for $(1)/LinkDef.h: $$(call dict_header_files,$(1)/LinkDef.h))
-$$(info )
-$$(info )
 .build/$(1)/$(notdir $(1))Dict.cxx: $(1)/LinkDef.h $$(call dict_header_files,$(1)/LinkDef.h)
 	@mkdir -p $$(dir $$@)
 	$$(call run_and_test,rootcint -f $$@ -c $$(INCLUDES) -p $$(notdir $$(filter-out $$<,$$^)) $$<,$$@,$$(COM_COLOR),$$(BLD_STRING) ,$$(OBJ_COLOR))
