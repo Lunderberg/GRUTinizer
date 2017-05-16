@@ -23,7 +23,7 @@ export __APPLE__:= 1
 CFLAGS     += -DOS_DARWIN -DHAVE_ZLIB
 CFLAGS     += -I/opt/X11/include -Qunused-arguments
 CPP        = clang++
-SHAREDSWITCH = -dynamiclib -install_name # ENDING SPACE
+SHAREDSWITCH = -undefined dynamic_lookup -dynamiclib -install_name # ENDING SPACE
 else
 export __LINUX__:= 1
 CPP        = g++
